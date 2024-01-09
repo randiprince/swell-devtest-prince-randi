@@ -1,4 +1,4 @@
-import { Controller, Get, NotFoundException } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { ReviewsCountResponse, ReviewsResponse } from './reviews.types';
 
@@ -7,8 +7,9 @@ export class ReviewsController {
 	constructor(private reviewsService: ReviewsService) {}
 
 	@Get()
-	async getReviews(): Promise<ReviewsResponse> {
-		throw new NotFoundException('Not implemented');
+	async getAllReviews(): Promise<ReviewsResponse> {
+		const reviews = await this.reviewsService.getAllReviews();
+		return { reviews };
 	}
 
 	@Get('/count')
