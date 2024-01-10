@@ -1,14 +1,38 @@
-import Alert from '@mui/material/Alert';
-import TaskIcon from '@mui/icons-material/Task';
+import List from '@mui/material/List';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { ReviewExt } from '../../models/Reviews';
+import ReviewsListItem from '../review-list-item/review-list-item';
+import { Alert } from '@mui/material';
 
-/* eslint-disable-next-line */
-export interface ReviewsListProps {}
+export function ReviewsList() {
+	const [reviews, setReview] = useState<ReviewExt[]>([]);
 
-export function ReviewsList(props: ReviewsListProps) {
+	const fetchReviews = async (): Promise<void> => {
+		try {
+			const response = await axios.get('/api/reviews');
+			setReview(response.data.reviews);
+		} catch (e) {
+			window.console.error('Error: ', e);
+		}
+	};
+
+	useEffect(() => {
+		fetchReviews();
+	}, []);
+
 	return (
-		<Alert severity="error" icon={<TaskIcon />}>
-			TODO: Implement ReviewsList
-		</Alert>
+		<List>
+			{reviews.length ? (
+				<>
+					{reviews.map((review) => (
+						<ReviewsListItem review={review}></ReviewsListItem>
+					))}
+				</>
+			) : (
+				<Alert severity="error">No reviews available</Alert>
+			)}
+		</List>
 	);
 }
 
