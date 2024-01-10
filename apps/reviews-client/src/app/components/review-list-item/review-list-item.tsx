@@ -15,9 +15,8 @@ export function ReviewsListItem({ review }: ReviewsListItemProps) {
 				alignItems: 'flex-start',
 				p: 1.25,
 				mb: '12px',
-				boxShadow: '5px 2px 10px -2px rgba(225, 25, 121, 0.3)',
+				boxShadow: '5px 2px 10px -2px rgba(157, 32, 84, 0.3)', //rgba of theme primary dark
 			}}
-			id={review.id}
 			key={review.id}
 		>
 			<Grid
@@ -40,7 +39,7 @@ export function ReviewsListItem({ review }: ReviewsListItemProps) {
 					<Typography variant="h3">{review.company.name}:</Typography>
 					<Rating name="read-only" value={review.rating} readOnly />
 				</Grid>
-				<Grid item>
+				<Grid>
 					<Typography display="block" variant="caption">
 						{getDate(review.createdOn)}
 					</Typography>
