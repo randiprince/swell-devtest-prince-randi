@@ -1,14 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
-import { ReviewsCountResponse, ReviewsResponse } from './reviews.types';
+import { ReviewsCountResponse, ReviewsResponse, ReviewQueryParams } from './reviews.types';
 
 @Controller('reviews')
 export class ReviewsController {
 	constructor(private reviewsService: ReviewsService) {}
 
 	@Get()
-	async getAllReviews(): Promise<ReviewsResponse> {
-		const reviews = await this.reviewsService.getAllReviews();
+	async getAllReviews(@Query() queryParams: ReviewQueryParams): Promise<ReviewsResponse> {
+		const currPage = parseInt(queryParams.page, 10) || 1;
+		const amount = parseInt(queryParams.limit, 10) || 10;
+
+		const reviews = await this.reviewsService.getAllReviews(currPage, amount);
 		return { reviews };
 	}
 

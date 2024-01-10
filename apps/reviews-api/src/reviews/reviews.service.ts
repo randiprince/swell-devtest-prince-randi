@@ -9,10 +9,12 @@ export class ReviewsService {
 		return this.prisma.review.count();
 	}
 
-	getAllReviews() {
+	getAllReviews(page: number, limit: number) {
 		return this.prisma.review.findMany({
-			orderBy: { createdOn: 'desc' },
 			include: { company: true, user: true },
+			orderBy: { createdOn: 'desc' },
+			skip: page * limit - limit,
+			take: limit,
 		});
 	}
 }

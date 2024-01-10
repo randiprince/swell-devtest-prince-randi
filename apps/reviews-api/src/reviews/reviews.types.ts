@@ -12,3 +12,8 @@ export interface ReviewExt extends Review {
 export interface ReviewsResponse {
 	reviews: ReviewExt[];
 }
+
+export interface ReviewQueryParams {
+	page: string;
+	limit: string;
+}

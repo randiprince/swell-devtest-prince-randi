@@ -80,8 +80,12 @@ describe('ReviewsController', () => {
 		});
 	});
 
-	describe('getReviews()', () => {
-		it.todo('should fetch all reviews');
+	describe('getAllReviews()', () => {
+		it('should fetch all reviews', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews?page=1&limit=10');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews).toHaveLength(3);
+		});
 
 		it.todo('should fetch reviews in descending order by date');
 
