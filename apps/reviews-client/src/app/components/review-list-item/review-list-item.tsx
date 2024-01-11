@@ -1,10 +1,22 @@
 import { Grid, ListItem, Rating, Typography } from '@mui/material';
 import { ReviewExt } from '../../models/Reviews';
 import { getDate } from '../../helpers/format';
+import { styled } from '@mui/material/styles';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export interface ReviewsListItemProps {
 	review: ReviewExt;
 }
+
+const StyledRating = styled(Rating)({
+	'& .MuiRating-iconFilled': {
+		color: '#e11979',
+	},
+	'& .MuiRating-iconEmpty': {
+		color: '#e11979',
+	},
+});
 
 export function ReviewsListItem({ review }: ReviewsListItemProps) {
 	return (
@@ -13,9 +25,10 @@ export function ReviewsListItem({ review }: ReviewsListItemProps) {
 				display: 'flex',
 				flexDirection: 'column',
 				alignItems: 'flex-start',
-				p: 1.25,
-				mb: '12px',
-				boxShadow: '5px 2px 10px -2px rgba(157, 32, 84, 0.3)', //rgba of theme primary dark
+				p: 1.5,
+				mb: '16px',
+				boxShadow: '3px 3px 10px -2px rgba(100, 108, 121, 0.4)', //rgba of theme grey 400
+				borderRadius: '5px',
 			}}
 			key={review.id}
 		>
@@ -37,7 +50,14 @@ export function ReviewsListItem({ review }: ReviewsListItemProps) {
 					}}
 				>
 					<Typography variant="h3">{review.company.name}:</Typography>
-					<Rating name="read-only" value={review.rating} readOnly />
+					<StyledRating
+						readOnly
+						name="review-rating"
+						value={review.rating}
+						precision={0.5}
+						icon={<FavoriteIcon fontSize="medium" />}
+						emptyIcon={<FavoriteBorderIcon fontSize="medium" />}
+					/>
 				</Grid>
 				<Grid>
 					<Typography display="block" variant="caption">

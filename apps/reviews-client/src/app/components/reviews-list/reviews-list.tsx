@@ -8,7 +8,7 @@ export function ReviewsList() {
 	const [reviews, setReview] = useState<ReviewExt[]>([]);
 	const [totalReviews, setTotalReviews] = useState<number>(0);
 	const [pageNumber, setPageNumber] = useState<number>(1);
-	const limit = 10;
+	const limit = 15;
 
 	const fetchReviews = useCallback(async (): Promise<void> => {
 		try {
@@ -42,7 +42,9 @@ export function ReviewsList() {
 		<>
 			<Typography display="block" textAlign="right" variant="caption">{`Reviews ${
 				pageNumber * limit - (limit - 1)
-			} - ${limit * pageNumber} of ${totalReviews}`}</Typography>
+			} - ${
+				limit * pageNumber <= totalReviews ? limit * pageNumber : totalReviews
+			} of ${totalReviews}`}</Typography>
 			<List>
 				{reviews.length ? (
 					<>
@@ -62,8 +64,8 @@ export function ReviewsList() {
 							<Button onClick={handlePrevious} disabled={pageNumber === 1}>
 								Previous
 							</Button>
-							<Typography>{`${pageNumber} of ${totalReviews / limit}`}</Typography>
-							<Button onClick={handleNext} disabled={pageNumber === totalReviews / limit}>
+							<Typography>{`${pageNumber} of ${Math.ceil(totalReviews / limit)}`}</Typography>
+							<Button onClick={handleNext} disabled={pageNumber >= totalReviews / limit}>
 								Next
 							</Button>
 						</Grid>
