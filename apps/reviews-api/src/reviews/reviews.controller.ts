@@ -9,7 +9,7 @@ export class ReviewsController {
 	@Get()
 	async getAllReviews(@Query() queryParams: ReviewQueryParams): Promise<ReviewsResponse> {
 		const currPage = parseInt(queryParams.page, 10) || 1;
-		const amount = parseInt(queryParams.limit, 10) || 10;
+		const amount = parseInt(queryParams.limit, 10) || 15;
 
 		const reviews = await this.reviewsService.getAllReviews(currPage, amount);
 		return { reviews };

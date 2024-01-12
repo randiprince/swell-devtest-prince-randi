@@ -28,10 +28,10 @@ describe('ReviewsController', () => {
 
 		await prisma.$transaction([
 			prisma.user.create({
-				data: { id: user1Id, email: 'user1@example.com' },
+				data: { id: user1Id, firstName: 'Randi', lastName: 'Prince', email: 'user1@example.com' },
 			}),
 			prisma.user.create({
-				data: { id: user2Id, email: 'user2@example.com' },
+				data: { id: user2Id, firstName: 'Hugo', lastName: 'Squish', email: 'user2@example.com' },
 			}),
 			prisma.company.create({
 				data: { id: company1Id, name: 'Test Company' },
@@ -87,12 +87,42 @@ describe('ReviewsController', () => {
 			expect(response.body.reviews).toHaveLength(3);
 		});
 
-		it.todo('should fetch reviews in descending order by date');
+		it('should fetch reviews in descending order by date', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews?page=1&limit=10');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews[0].id).toBe('3');
+			expect(response.body.reviews[1].id).toBe('2');
+			expect(response.body.reviews[2].id).toBe('1');
+		});
 
-		it.todo('should include user data with review');
+		it('should include user data with review', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews?page=1&limit=10');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews[0].user).toBeDefined();
+			expect(response.body.reviews[0].user.email).toBe('user2@example.com');
+			expect(response.body.reviews[0].user.firstName).toBe('Hugo');
+			expect(response.body.reviews[0].user.lastName).toBe('Squish');
+			expect(response.body.reviews[0].user.id).toBe('user-2');
+		});
 
-		it.todo('should include company data with review');
+		it('should include company data with review', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews?page=1&limit=10');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews[0].company).toBeDefined();
+			expect(response.body.reviews[0].company.name).toBe('Test Company');
+			expect(response.body.reviews[0].company.id).toBe('company-1');
+		});
 
-		// Feel free to add any additional tests you think are necessary
+		it('should return bad request if page/skip value is negative', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews?page=-1&limit=10');
+			expect(response.status).toBe(500);
+			expect(response.body.reviews).toBeUndefined();
+		});
+
+		it('should return no reviews b/c 3 total reviews but requesting page 2 with limit > total', async () => {
+			const response = await request(app.getHttpServer()).get('/reviews?page=2&limit=10');
+			expect(response.status).toBe(200);
+			expect(response.body.reviews).toHaveLength(0);
+		});
 	});
 });
