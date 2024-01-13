@@ -10,10 +10,7 @@ export interface ReviewsListItemProps {
 }
 
 const StyledRating = styled(Rating)({
-	'& .MuiRating-iconFilled': {
-		color: '#e11979',
-	},
-	'& .MuiRating-iconEmpty': {
+	'& .MuiRating-iconFilled, .MuiRating-iconEmpty': {
 		color: '#e11979',
 	},
 });
@@ -49,8 +46,11 @@ export function ReviewsListItem({ review }: ReviewsListItemProps) {
 						gap: '10px',
 					}}
 				>
-					<Typography variant="h3">{review.company.name}:</Typography>
+					<Typography data-testid="review-company" variant="h3">
+						{review.company.name}:
+					</Typography>
 					<StyledRating
+						data-testid="review-rating"
 						readOnly
 						name="review-rating"
 						value={review.rating}
@@ -60,7 +60,7 @@ export function ReviewsListItem({ review }: ReviewsListItemProps) {
 					/>
 				</Grid>
 				<Grid>
-					<Typography display="block" variant="caption">
+					<Typography data-testid="review-date" display="block" variant="caption">
 						{getDate(review.createdOn)}
 					</Typography>
 				</Grid>
@@ -68,6 +68,7 @@ export function ReviewsListItem({ review }: ReviewsListItemProps) {
 
 			{review.reviewText && (
 				<Typography
+					data-testid="review-text"
 					sx={{ display: 'block', pt: 1, pr: 1, pl: 1, fontStyle: 'italic' }}
 					variant="body1"
 					gutterBottom
@@ -75,7 +76,7 @@ export function ReviewsListItem({ review }: ReviewsListItemProps) {
 					"{review.reviewText}"
 				</Typography>
 			)}
-			<Typography sx={{ display: 'block', pl: 0.25 }} variant="subtitle1">
+			<Typography data-testid="reviewer-name" sx={{ display: 'block', pl: 0.25 }} variant="body1">
 				- {`${review.user.firstName} ${review.user.lastName}`}
 			</Typography>
 		</ListItem>

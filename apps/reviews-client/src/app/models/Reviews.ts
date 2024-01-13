@@ -5,7 +5,7 @@ export interface Review {
 	id: string;
 	reviewerId: string;
 	companyId: string;
-	reviewText: string;
+	reviewText: string | null;
 	rating: number;
 	createdOn: string;
 }
